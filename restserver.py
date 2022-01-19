@@ -1,6 +1,6 @@
 from flask import Flask, request
 from ph4_walkingpad import pad
-from ph4_walkingpad.pad import WalkingPad, Controller
+from ph4_walkingpad.pad import WalkingPad, Controller, Scanner
 from ph4_walkingpad.utils import setup_logging
 import asyncio
 import yaml
@@ -75,7 +75,12 @@ def save_config(config):
 async def connect():
     address = load_config()['address']
     print("Connecting to {0}".format(address))
-    await ctler.run(address)
+    if Scanner.is_darwin(): # Specifying address does not work on OSX 12+.
+        scanner = Scanner()
+        await scanner.scan()
+        await ctler.run(scanner.walking_belt_candidates[0])
+    else:
+        await ctler.run(address)
     await asyncio.sleep(minimal_cmd_space)
 
 
