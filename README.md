@@ -14,13 +14,25 @@ This can be used then as a source for visualizing, for example in a Grafana Dash
 The REST API can easily be extended, for more details on actions that can be done check the [ph4-walkingpad controller](https://github.com/ph4r05/ph4-walkingpad) repo.
 
 ## Run Server
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
 Install dependencies:
-`python -m pip install --no-cache-dir -r requirements.txt`
+
+```bash
+pip3 install --no-cache-dir -r requirements.txt
+```
 
 Create initial config by renaming the *sample_config.yaml* to *config.yaml*.
 
-Then run the application:
-`python restserver.py`
+Then run the application
+
+```bash
+python restserver.py
+```
 
 ## Connect to WalkingPad
 
