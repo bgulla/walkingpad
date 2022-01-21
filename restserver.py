@@ -9,6 +9,11 @@ from datetime import date
 
 app = Flask(__name__)
 
+WALKSPEED = {
+    'Normal': 20,
+    'Turbo': 60
+}
+
 # minimal_cmd_space does not exist in the version we use from pip, thus we define it here.
 # This should be removed once we can take it from the controller
 minimal_cmd_space = 0.69
@@ -35,6 +40,30 @@ def on_new_status(sender, record):
     last_status['steps'] = record.steps
     last_status['distance'] = distance_in_km
     last_status['time'] = record.time
+
+def create_table():
+    db_config = load_config()['database']
+    if not db_config['host']:
+        return
+
+    try:
+        conn = psycopg2.connect(host=db_config['host'], port=db_config['port'],
+                                dbname=db_config['dbname'], user=db_config['user'], password=db_config['password'])
+        cur = conn.cursor()
+        commands = (
+            """
+            CREATE TABLE exercise (
+                date_today DATE PRIMARY KEY, 
+                steps INTEGER,
+                duration INTEGER,
+                distance_in_km FLOAT
+            )
+            """)
+        cur.execute(commands)
+        conn.commit()
+    finally:
+        cur.close()
+        conn.close()
 
 
 def store_in_db(steps, distance_in_km, duration_in_seconds):
@@ -222,20 +251,20 @@ async def start_walk():
     return last_status
 
 @app.route("/turbo", methods=['POST'])
-async def start_walk():
+async def turbo_walk():
     try:
         await connect()
-        await ctler.change_speed(6.0)
+        await ctler.change_speed(WALKSPEED['Turbo'])
         await asyncio.sleep(minimal_cmd_space)
     finally:
         await disconnect()
     return last_status
 
 @app.route("/normal", methods=['POST'])
-async def start_walk():
+async def normal_walk():
     try:
         await connect()
-        await ctler.change_speed(2.0)
+        await ctler.change_speed(WALKSPEED['Normal'])
         await asyncio.sleep(minimal_cmd_space)
     finally:
         await disconnect()

@@ -5,6 +5,8 @@ from time import time
 from windowcapture import WindowCapture
 from utils import ResizeWithAspectRatio
 
+import requests
+
 # Change the working directory to the folder this script is in.
 # Doing this because I'll be putting the files from each video in their own folder on GitHub
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -15,6 +17,13 @@ wincap = WindowCapture('Dota 2')
 
 skill_off_cooldown_img = cv.imread('assets/skill-off-cooldown-1080p.png', cv.IMREAD_UNCHANGED)
 skill_on_cooldown_img = cv.imread('assets/skill-on-cooldown-1080p.png', cv.IMREAD_UNCHANGED)
+
+def charge():
+    response = requests.request("POST", "http://192.168.188.77:5678/turbo")
+    print(response.text)
+    time.sleep(17)
+    response = requests.request("POST", "http://192.168.188.77:5678/normal")
+    print(response.text)
 
 def find_match(image, match):
     result = cv.matchTemplate(image, match, cv.TM_SQDIFF_NORMED)
@@ -30,6 +39,7 @@ def find_match(image, match):
 
     if locations:
         print('Found object.')
+        charge()
 
         object_w = match.shape[1]
         object_h = match.shape[0]
