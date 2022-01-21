@@ -13,6 +13,16 @@ This can be used then as a source for visualizing, for example in a Grafana Dash
 
 The REST API can easily be extended, for more details on actions that can be done check the [ph4-walkingpad controller](https://github.com/ph4r05/ph4-walkingpad) repo.
 
+## Bring Up DB
+
+```bash
+# Up
+docker-compose -f .devcontainer/docker-compose.yml up -d db
+
+# Down
+docker-compose -f .devcontainer/docker-compose.yml down
+```
+
 ## Run Server
 
 ```bash
