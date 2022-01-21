@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 import os
-from time import time
+from time import time, sleep
 from windowcapture import WindowCapture
 from utils import ResizeWithAspectRatio
 
@@ -21,7 +21,7 @@ skill_on_cooldown_img = cv.imread('assets/skill-on-cooldown-1080p.png', cv.IMREA
 def charge():
     response = requests.request("POST", "http://192.168.188.77:5678/turbo")
     print(response.text)
-    time.sleep(17)
+    sleep(5)
     response = requests.request("POST", "http://192.168.188.77:5678/normal")
     print(response.text)
 

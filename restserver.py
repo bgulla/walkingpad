@@ -10,7 +10,7 @@ from datetime import date
 app = Flask(__name__)
 
 WALKSPEED = {
-    'Normal': 20,
+    'Normal': 40,
     'Turbo': 60
 }
 
