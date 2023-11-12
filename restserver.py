@@ -260,6 +260,19 @@ async def turbo_walk():
         await disconnect()
     return last_status
 
+# FORM speed=60
+## Note: Speed is an INT not a FLOAT. Consider 60 = 6km * 10.
+@app.route("/speed", methods=['POST'])
+async def set_speed():
+    try:
+        await connect()
+        await ctler.change_speed(request.form.get(speed))
+        await asyncio.sleep(minimal_cmd_space)
+    finally:
+        await disconnect()
+    return last_status
+
+
 @app.route("/normal", methods=['POST'])
 async def normal_walk():
     try:

@@ -13,7 +13,7 @@ profile.json.*
 profile-a*.json*
 account-data.json
 
-config.yaml
+#config.yaml
 config_azure.yaml
 config_local.yaml
 
